@@ -11,7 +11,7 @@ from youtube_transcript_api import YouTubeTranscriptApi
 
 
 load_dotenv()
-api_key = os.getenv("YTB_API_KEY")
+api_key = "AIzaSyBQdmgDg_M-OfjQcTFpscXR-tb6RfAk-0M"
 youtube = build("youtube", "v3", developerKey=api_key)
 
 
@@ -108,7 +108,7 @@ def fetch_and_save_transcript(video_id, file_name):
     try:
         transcript = YouTubeTranscriptApi.get_transcript(video_id, languages=["ar"])
     except Exception as e:
-        print(f"An error occurred: {e}")
+        print(f" An error occurred: {e}")
         return False
     with open(file_name, "w", encoding="utf-8") as file:
         for line in transcript:
@@ -132,11 +132,17 @@ if __name__ == "__main__":
         type=int,
         default=None,
     )
-
+    parser.add_argument(
+        "--max_consecutive_fail",
+        help="The amount of consecutive unsuccesful transcripts retrieval before ignoring the rest of the videos",
+        type=int,
+        default=20,
+    )
     args = parser.parse_args()
     max_videos = args.max_videos
     channel_name = args.channel_name
     results_dir = args.results_dir
+    max_error_cnt = args.max_consecutive_fail
 
     TRANSCRIPTS_DIR = os.path.join(os.getcwd(), results_dir)
     os.makedirs(TRANSCRIPTS_DIR, exist_ok=True)
@@ -148,13 +154,14 @@ if __name__ == "__main__":
 
     print(f"Fetching transcripts for {channel_name}...")
     cnt = 0
+    error_cnt = 0
     for i, video in enumerate(tqdm(videos)):
         output_file = os.path.join(TRANSCRIPTS_DIR, f"{channel_name}_{i}.txt")
         json_file = os.path.join(TRANSCRIPTS_DIR, "transcripts.json")
 
         # save transcript
         success = fetch_and_save_transcript(video["ID"], output_file)
-
+        
         # save json file with transcript_path, video_url, video_title
         if success:
             with open(json_file, "a", encoding="utf-8", newline="\n") as file:
@@ -170,6 +177,13 @@ if __name__ == "__main__":
                     ensure_ascii=False,
                     indent=4,
                 )
+            print(f" Successfully saved transcription for "+ video["URL"] +". reseting the error counter to 0")
+            error_cnt = 0
             cnt += 1
+        else :
+            error_cnt += 1
+            print(f" Current successive videos with no transcriptions : {error_cnt}")
+        if error_cnt > max_error_cnt :
+            break
 
     print(f"Saved {cnt} transcripts for {channel_name}.")
