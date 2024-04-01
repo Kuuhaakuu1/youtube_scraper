@@ -69,12 +69,12 @@ To fetch video transcripts from a YouTube channel, follow these steps:
 
    **N.B.** Not all videos have a transcript!
 
-```markdown
 ### Automated File Cleanup Process
 
 Automate the cleanup of text files in a directory with this script. Here's how to use it:
 
 1. **Open Terminal:** Navigate to the script's directory.
+
 ```
 
 cd path-to-your-script-directory
@@ -82,11 +82,13 @@ cd path-to-your-script-directory
 ```
 
 2. **Execute Script:** Run the script with options.
+
 ```
 
 python script_name.py --delete_files True --create_backup True --backup_folder "Deleted_files"
 
 ```
+
 - `script_name.py`: Replace with your script's filename.
 - `--delete_files True`: Enable file deletion.
 - `--create_backup True`: Enable backup creation.
@@ -97,4 +99,7 @@ python script_name.py --delete_files True --create_backup True --backup_folder "
 4. **Feedback:** Progress and actions (backup and deletion) are shown in the terminal.
 
 **Note:** Customize script arguments to fit your cleanup requirements.
+
+```
+
 ```
