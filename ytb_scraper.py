@@ -1,7 +1,6 @@
 import argparse
 import json
 import os
-
 import requests
 from dotenv import load_dotenv
 from googleapiclient.discovery import build
@@ -11,7 +10,7 @@ from youtube_transcript_api import YouTubeTranscriptApi
 
 
 load_dotenv()
-api_key = "AIzaSyBQdmgDg_M-OfjQcTFpscXR-tb6RfAk-0M"
+api_key = os.getenv("YOUTUBE_API_KEY")
 youtube = build("youtube", "v3", developerKey=api_key)
 
 

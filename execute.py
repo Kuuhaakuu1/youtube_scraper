@@ -1,5 +1,6 @@
 import argparse
 import subprocess
+import os
 
 def execute_command_for_channels(file_path, base_result_dir):
     """
@@ -11,7 +12,7 @@ def execute_command_for_channels(file_path, base_result_dir):
     """
     with open(file_path, 'r') as file:
         for line in file:
-            results_dir = "transcripts"  # Update this to your desired results directory
+            results_dir = os.path.join(base_result_dir, "transcript")  # Update this to your desired results directory
             channel_url = line.strip()  # Remove any leading/trailing whitespace
             results_dir = results_dir +"_"+ channel_url
             if channel_url:  # Check if the line is not empty
