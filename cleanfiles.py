@@ -60,7 +60,7 @@ if __name__ == "__main__":
                         lines = file.readlines()
                         words = [word for line in lines for word in line.split()]
                         threshold = len(words) * 0.1
-                        if len(lines) <= 10 or any_threshold(words, threshold, lambda x: x in listofwords) or True:
+                        if len(lines) <= 10 or any_threshold(words, threshold, lambda x: x in listofwords):
                             # Create a folder for deleted files if it doesn't exist
                             if create_backup:
                                 deleted_files_folder = os.path.join('./', backup_folder)
